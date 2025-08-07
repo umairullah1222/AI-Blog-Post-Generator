@@ -1,0 +1,6 @@
+{
+  "name": "AI Blog Post Generator",
+  "description": "An application that uses AI to generate high-quality blog posts on any topic. Users can specify the topic, tone, and desired length to get a customized article in markdown format.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
