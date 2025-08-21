@@ -38,7 +38,6 @@ interface PendingVerification {
 }
 let pendingVerifications: PendingVerification[] = [];
 
-
 // --- Utility Functions ---
 function omitPassword(user: User): PublicUser {
     const { password, ...publicUser } = user;
@@ -77,7 +76,6 @@ async function handleGetRequest(req: Request): Promise<Response> {
             const decoded = verify(token, JWT_SECRET) as { user: PublicUser };
             return new Response(JSON.stringify({ user: decoded.user }), { status: 200, headers: jsonHeaders });
         } catch (e) {
-            // Invalid token
             return new Response(JSON.stringify({ user: null }), { status: 200, headers: jsonHeaders });
         }
     }
@@ -102,7 +100,6 @@ async function handlePostRequest(req: Request): Promise<Response> {
             const verificationCode = generateVerificationCode();
             const newUser: User = { username, email, password, profilePicture: null };
             
-            // Remove any stale verification requests for this email
             pendingVerifications = pendingVerifications.filter(v => v.email.toLowerCase() !== email.toLowerCase());
             
             pendingVerifications.push({
@@ -128,8 +125,6 @@ async function handlePostRequest(req: Request): Promise<Response> {
             }
 
             const verificationCode = generateVerificationCode();
-            
-            // Remove any stale verification requests for this email
             pendingVerifications = pendingVerifications.filter(v => v.email.toLowerCase() !== email.toLowerCase());
 
             pendingVerifications.push({
@@ -229,7 +224,11 @@ export default async function handler(req: Request): Promise<Response> {
             return await handlePostRequest(req);
         }
 
-        return new Response('Method Not Allowed', { status: 405, headers: { 'Allow': 'GET, POST' } });
+        // ✅ FIXED: Always return JSON instead of plain text
+        return new Response(JSON.stringify({ success: false, message: 'Method Not Allowed' }), { 
+            status: 405, 
+            headers: { 'Content-Type': 'application/json', 'Allow': 'GET, POST' } 
+        });
 
     } catch (error) {
         console.error('Auth API Error:', error);
