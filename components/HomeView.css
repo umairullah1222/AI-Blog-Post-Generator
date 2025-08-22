@@ -1,0 +1,43 @@
+.float1 {
+  top: 10%;
+  left: 20%;
+  animation: float 12s ease-in-out infinite, glow 10s ease-in-out infinite;
+}
+
+.float2 {
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  animation: float 15s ease-in-out infinite 2s, glow 12s ease-in-out infinite 2s;
+}
+
+.float3 {
+  top: 25%;
+  left: 75%;
+  animation: float 10s ease-in-out infinite 4s, glow 8s ease-in-out infinite 4s;
+}
+
+.float4 {
+  bottom: 15%;
+  left: 5%;
+  animation: float 13s ease-in-out infinite 1s, glow 11s ease-in-out infinite 1s;
+}
+
+/* 👇 ye animations bhi add karo */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: blur(8px) brightness(1);
+  }
+  50% {
+    filter: blur(12px) brightness(1.3);
+  }
+}
